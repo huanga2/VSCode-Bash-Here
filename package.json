@@ -11,16 +11,38 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onCommand:extension.BashHere"
     ],
     "main": "./out/extension",
     "contributes": {
+        "configuration": [
+            {
+                "type": "object",
+                "title": "BashHere configuration",
+                "properties": {
+                    "BashHere.WSLPath" : {
+                        "type" : "string",
+                        "default" : "ubuntu",
+                        "description": "Path to WSL executable."
+                    }
+                }
+            }
+        ],
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "extension.BashHere",
+                "title": "Open in Bash"
             }
-        ]
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "when": "explorerResourceIsFolder",
+                    "command": "extension.BashHere",
+                    "group": "navigation@1000"
+                }
+            ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
