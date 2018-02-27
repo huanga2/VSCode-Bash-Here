@@ -22,7 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
         
-        var onlyPath = require('path').dirname(selectedItem.fsPath);
+        var onlyPath = selectedItem.fsPath;
 
         // console.log(onlyPath);
 
