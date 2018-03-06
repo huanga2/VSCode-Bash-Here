@@ -2,6 +2,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { ChildProcess } from 'child_process';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -28,11 +29,11 @@ export function activate(context: vscode.ExtensionContext) {
 
         const{spawn} = require("child_process");
 
-        var WSLPath = vscode.workspace.getConfiguration("BashHere").WSLPath;
+        var WSLPath : string = vscode.workspace.getConfiguration("BashHere").WSLPath;
         // console.log(WSLPath);
 
 
-        spawn(WSLPath, ['-c', 'bash'], {shell: true, cwd: onlyPath, detached: true});
+        spawn('start', ['/D', `"${onlyPath}"`, WSLPath, '-c', 'bash'], {shell: true, cwd: onlyPath, detached: true});
 
         // Display a message box to the user
         // vscode.window.showInformationMessage('Hello World!');
