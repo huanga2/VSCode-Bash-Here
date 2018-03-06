@@ -2,7 +2,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { ChildProcess } from 'child_process';
+
+var bashPID : string = "";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -17,7 +18,6 @@ export function activate(context: vscode.ExtensionContext) {
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand('extension.BashHere', (selectedItem : vscode.Uri) => {
         // The code you place here will be executed every time your command is executed
-
         
         if (selectedItem == undefined) {
             return;
@@ -32,8 +32,21 @@ export function activate(context: vscode.ExtensionContext) {
         var WSLPath : string = vscode.workspace.getConfiguration("BashHere").WSLPath;
         // console.log(WSLPath);
 
-
-        spawn('start', ['/D', `"${onlyPath}"`, WSLPath, '-c', 'bash'], {shell: true, cwd: onlyPath, detached: true});
+        if (bashPID === "") {
+            const shell = spawn("powershell", ["-c", `echo $((Start-process -PassThru "${WSLPath}" "-c bash").ID)`]
+                                            , {cwd: onlyPath});
+    
+            shell.stdout.on('data', (data : any) => {
+                bashPID = data.toString();
+                console.log(bashPID);
+            });
+        }
+        else {
+            var AHKPath : string = `${__dirname}\\..\\AHK\\PIDSend.exe`;
+            console.log(AHKPath);
+            console.log(`"${AHKPath}" ${bashPID} "echo 1"`);
+            spawn(`start "${AHKPath}" "${bashPID}" "echo 1"`, {shell: true, detached: true});
+        }
 
         // Display a message box to the user
         // vscode.window.showInformationMessage('Hello World!');

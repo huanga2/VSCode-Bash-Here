@@ -1,0 +1,1 @@
+﻿ControlSend, , %2%{enter},ahk_pid %1%

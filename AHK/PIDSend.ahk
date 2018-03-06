@@ -1,1 +1,2 @@
-﻿ControlSend, , A_Args[2],ahk_pid A_Args[1]
+﻿SetKeyDelay, 1
+ControlSend, , %2%{enter},ahk_pid %1%
